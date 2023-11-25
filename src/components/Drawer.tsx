@@ -97,6 +97,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [isRightPanelOpen, setIsRightPanelOpen] = React.useState(true); 
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -104,6 +105,26 @@ export default function MiniDrawer() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleRightPanelToggle = () => {
+    setIsRightPanelOpen(!isRightPanelOpen);
+  };
+
+  const rightPanelStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'start',
+    alignItems: 'center',
+    height: 'calc(100% - 64px)', // Assuming 64px is your AppBar height
+    width: isRightPanelOpen ? 'fit-content' : '0px',
+    borderRight: 1,
+    borderColor: 'divider',
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   };
 
   return (
@@ -185,36 +206,47 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+
+
+      <Box 
+            sx={{ 
+                flexGrow: 1, 
+                p: 3,             
+                borderRight: 1,
+                borderColor: 'divider',
+            }}>
         <DrawerHeader />
-        <Box
-            sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'start',
-            alignItems: 'center',
-            height: 'calc(100% - 64px)',
-            width: 'fit-content',
-            borderRight: 1,
-            borderColor: 'divider',
-            }}
-        >
-        <Box 
-          sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              textAlign: 'center',
-              borderBottom: 1,
-              borderColor: 'divider',
-          }}
-        >        
-          <DigitalClock />
-          <BasicDateRangeCalendar />
-        </Box>        
-        <Box>
-        </Box>
+            <IconButton onClick={handleRightPanelToggle}>
+                {isRightPanelOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+
+        <Box sx={rightPanelStyle}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'start',
+                    alignItems: 'center',
+                    height: 'calc(100% - 64px)',
+                    width: 'fit-content',
+                }}
+            >
+                <Box 
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        textAlign: 'center',
+                        borderBottom: 1,
+                        borderColor: 'divider',
+                    }}
+                >        
+                    <DigitalClock />
+                    <BasicDateRangeCalendar />
+                </Box>   
+            </Box>   
         </Box>
       </Box>
+
     </Box>
   );
 }
