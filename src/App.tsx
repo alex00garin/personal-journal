@@ -1,25 +1,21 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+const SignIn = React.lazy(() => import('./components/SignIn'));
+const SignUp = React.lazy(() => import('./components/SignUp'));
+const HomePage = React.lazy(() => import('./pages/HomePage'));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="*" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/homepage" element={<HomePage />} />
+        </Routes>
+      </React.Suspense>
+    </Router>
   );
 }
 
