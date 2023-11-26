@@ -18,8 +18,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import BasicDateRangeCalendar from './BasicDatePicker'
-import DigitalClock from './DigitalClock';
+// import BasicDateRangeCalendar from './BasicDatePicker'
+// import DigitalClock from './DigitalClock';
+// import CentralPanel from './CentralPanel';
 
 const drawerWidth = 240;
 
@@ -97,7 +98,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [isRightPanelOpen, setIsRightPanelOpen] = React.useState(true); 
+  // const [isLeftPanelOpen, setIsLeftPanelOpen] = React.useState(true); 
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -107,29 +108,14 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  const handleRightPanelToggle = () => {
-    setIsRightPanelOpen(!isRightPanelOpen);
-  };
-
-  const rightPanelStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'start',
-    alignItems: 'center',
-    height: 'calc(100% - 64px)', // Assuming 64px is your AppBar height
-    width: isRightPanelOpen ? 'fit-content' : '0px',
-    borderRight: 1,
-    borderColor: 'divider',
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  };
-
+  // const handleLeftPanelToggle = () => {
+  //   setIsLeftPanelOpen(!isLeftPanelOpen);
+  // };
+  
   return (
-    <Box className={'bg-neutral-100'} sx={{ display: 'flex', height: '100vh' }}>
+    <Box sx={{ display: 'flex', height: '100vh' }}>
       <CssBaseline />
+      {/* App Bar */}
       <AppBar position="fixed" open={open}>
         <Toolbar className={'bg-neutral-100'}>
           <IconButton 
@@ -148,12 +134,14 @@ export default function MiniDrawer() {
           </Typography>
         </Toolbar>
       </AppBar>
+      {/* Drawer */}
       <Drawer className={'bg-neutral-800 text-neutral-100'} variant="permanent" open={open}>
         <DrawerHeader className={'bg-neutral-800 text-neutral-100'}>
           <IconButton  onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon className={'text-neutral-100'}/> : <ChevronLeftIcon className={'text-neutral-100'}/>}
           </IconButton>
         </DrawerHeader>
+        {/* List */}
         <Divider className={'bg-neutral-200'}/>
         <List className={'bg-neutral-800 text-neutral-100'}>
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
@@ -166,7 +154,6 @@ export default function MiniDrawer() {
                 }}
               >
                 <ListItemIcon
-                
                   sx={{
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
@@ -181,72 +168,11 @@ export default function MiniDrawer() {
           ))}
         </List>
         <Divider className={'bg-neutral-200'}/>
-        <List className={'bg-neutral-800 text-neutral-100'}>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon className={'text-neutral-100'} /> : <MailIcon className={'text-neutral-100'}/>}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
 
-
-      <Box 
-            sx={{ 
-                flexGrow: 1, 
-                p: 3,             
-                borderRight: 1,
-                borderColor: 'divider',
-            }}>
+      <Box >
         <DrawerHeader />
-            <IconButton onClick={handleRightPanelToggle}>
-                {isRightPanelOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
-
-        <Box sx={rightPanelStyle}>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'start',
-                    alignItems: 'center',
-                    height: 'calc(100% - 64px)',
-                    width: 'fit-content',
-                }}
-            >
-                <Box 
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        textAlign: 'center',
-                        borderBottom: 1,
-                        borderColor: 'divider',
-                    }}
-                >        
-                    <DigitalClock />
-                    <BasicDateRangeCalendar />
-                </Box>   
-            </Box>   
-        </Box>
       </Box>
-
     </Box>
   );
 }
