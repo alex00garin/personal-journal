@@ -11,9 +11,14 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 export default function HomePage() {
   const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true);
+  const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
 
   const handleLeftPanelToggle = () => {
     setIsLeftPanelOpen(!isLeftPanelOpen);
+  };
+
+  const handleRightPanelToggle = () => {
+    setIsRightPanelOpen(!isRightPanelOpen);
   };
 
   return (
@@ -22,7 +27,7 @@ export default function HomePage() {
         <Drawer />
         <Box className="main-content mt-20 flex w-full py-3">
           <Box className="sectors flex justify-between w-full gap-3">
-            <Box className={`flex-col border-r transition-all duration-300 ease-in-out ${isLeftPanelOpen ? '' : 'w-10'}`}>
+          <Box className="flex-col w-auto border-r">
               <IconButton onClick={handleLeftPanelToggle}>
                 {isLeftPanelOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
               </IconButton>
@@ -32,10 +37,14 @@ export default function HomePage() {
               <CentralPanel />
             </Box>
             <Box className="flex-col w-auto">
-              <RightPanel />
+              <IconButton onClick={handleRightPanelToggle}>
+                {isRightPanelOpen ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+              </IconButton>
+              <RightPanel isRightPanelOpen={isRightPanelOpen} />
             </Box>
           </Box>
         </Box>
       </Box>
-    </>  )
+    </>  
+  )
 }

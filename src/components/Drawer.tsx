@@ -98,7 +98,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  // const [isLeftPanelOpen, setIsLeftPanelOpen] = React.useState(true); 
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -108,10 +107,6 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  // const handleLeftPanelToggle = () => {
-  //   setIsLeftPanelOpen(!isLeftPanelOpen);
-  // };
-  
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
       <CssBaseline />

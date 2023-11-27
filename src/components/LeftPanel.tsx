@@ -11,15 +11,13 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ isLeftPanelOpen }) => {
   const leftPanelStyle = {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'start',
-    alignItems: 'center',
     height: 'calc(100% - 80px)',
     width: isLeftPanelOpen ? 'fit-content' : '0px',
     overflowX: 'hidden',
   };
 
   return (
-    <Box className={'transition-all duration-500 ease-in-out'} sx={leftPanelStyle}>
+    <Box sx={leftPanelStyle}>
       {isLeftPanelOpen && (
         <Box className={'flex flex-col justify-start items-center w-fit'}>        
           <Box className={'flex flex-col text-center'}>

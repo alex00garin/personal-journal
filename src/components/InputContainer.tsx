@@ -1,30 +1,24 @@
-import React, { useState } from 'react';
-import { Box } from '@mui/material';
-import FileInput from './FileInputProps';
+import { Box, CardContent, IconButton, Input, InputAdornment, Typography } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 
 export default function InputContainer() {
 
-  const [textInput, setTextInput] = useState('');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  const handleTextChange = (text: string) => {
-    setTextInput(text);
-  };
-
-  const handleFileChange = (file: File | null) => {
-    setSelectedFile(file);
-  };
 
   return (
     <Box className={'flex flex-col w-full'}>
-            <p>Text input: {textInput}</p>
-
-      <FileInput 
-        onTextChange={handleTextChange}
-        onFileChange={handleFileChange}
-      />
-      {/* You can display the text or file info here if needed */}
-      <p>Selected file: {selectedFile ? selectedFile.name : 'None'}</p>
+      <CardContent className={'flex w-full border rounded-lg'}>
+        <Input
+            fullWidth
+            className='border border-b-none rounded-lg mt-5 p-1'
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton aria-label="send">
+                  <SendIcon />
+                </IconButton>
+              </InputAdornment>
+            }
+        />
+      </CardContent>
     </Box>
   );
 }
