@@ -1,7 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Box, CardContent, CircularProgress, IconButton, TextareaAutosize } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 interface InputContainerProps {
   addNote: (noteContent: string) => void;
@@ -9,25 +8,10 @@ interface InputContainerProps {
 
 export default function InputContainer({ addNote }: InputContainerProps) {
   const [inputValue, setInputValue] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
-  };
-
-  const handleAttachClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setIsLoading(true); // Start loading
-      // Simulate file upload
-      setIsLoading(false); // End loading
-    }
   };
 
   const handleSubmit = () => {
@@ -45,20 +29,10 @@ export default function InputContainer({ addNote }: InputContainerProps) {
   };
 
   return (
-    <Box className={'flex flex-col w-full'}>
+    <Box className={'flex flex-col w-full m-0 p-0'}>
       <CardContent className={'flex w-full items-center'}>
-        <IconButton aria-label="attach" onClick={handleAttachClick} disabled={isLoading}>
-          <AttachFileIcon />
-        </IconButton>
-        <input
-          type="file"
-          style={{ display: 'none' }}
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          disabled={isLoading}
-        />
         <TextareaAutosize
-        className={'bg-neutral-100 border rounded-lg'}
+          className={'bg-neutral-100 border rounded-lg'}
           minRows={1}
           maxRows={6}
           style={{ 
@@ -72,10 +46,13 @@ export default function InputContainer({ addNote }: InputContainerProps) {
           placeholder="Enter a note..."
           onKeyDown={handleKeyDown}
         />
-        {isLoading && <CircularProgress size={24} />} 
-        <IconButton  aria-label="send" onClick={handleSubmit} size="medium">
-          <SendIcon />
-        </IconButton>
+        {isLoading ? (
+          <CircularProgress size={24} />
+        ) : (
+          <IconButton aria-label="send" onClick={handleSubmit} size="medium">
+            <SendIcon />
+          </IconButton>
+        )}
       </CardContent>
     </Box>
   );
