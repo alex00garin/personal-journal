@@ -1,22 +1,20 @@
-import InputContainer from './InputContainer'
-import { Box, Card, CardContent, IconButton, Input, Pagination, Typography } from '@mui/material'
+import InputContainer from './InputContainer';
+import { Box, Card, CardContent, IconButton, Input, Pagination, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { Note, getNotes, addNote as storageAddNote, deleteNote as storageDeleteNote } from '../utils/notesStorage';
+import React, { SetStateAction, Dispatch } from 'react';
 
-interface Note {
-  id: string;
-  content: string;
-  createdAt: number;
+interface CentralPanelProps {
+  setSelectedCardId: Dispatch<SetStateAction<string | null>>;
 }
 
 const notesPerPage = 5;
 
-export default function CentralPanel() {
-  const [notes, setNotes] = useState<Note[]>(() => {
-    const savedNotes = localStorage.getItem('notes');
-    return savedNotes ? JSON.parse(savedNotes) : [];
-  });
+const CentralPanel: React.FC<CentralPanelProps> = ({ setSelectedCardId }) => {
+  const initialNotes = getNotes();
+  const [notes, setNotes] = useState<Note[]>(initialNotes);
 
   const [editNoteId, setEditNoteId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState('');
@@ -28,6 +26,20 @@ export default function CentralPanel() {
   const indexOfFirstNote = indexOfLastNote - notesPerPage;
   const currentNotes = notes.slice(indexOfFirstNote, indexOfLastNote);
 
+  const handleEditClick = (event: React.MouseEvent, noteId: string) => {
+    event.stopPropagation(); // Prevent triggering card's onClick
+    setEditNoteId(noteId);
+    const noteToEdit = notes.find(note => note.id === noteId);
+    if (noteToEdit) {
+      setEditContent(noteToEdit.content);
+    }
+  };
+
+  const handleDeleteClick = (event: React.MouseEvent, noteId: string) => {
+    event.stopPropagation(); // Prevent triggering card's onClick
+    handleDeleteNote(noteId);
+  };
+
   const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
   };
@@ -36,20 +48,23 @@ export default function CentralPanel() {
     localStorage.setItem('notes', JSON.stringify(notes));
   }, [notes]);
 
-  const addNote = (noteContent: string) => {
+  const handleAddNote = (noteContent: string) => {
     const newNote: Note = {
       id: Date.now().toString(),
       content: noteContent,
       createdAt: Date.now() 
     };
-    setNotes(prevNotes => [...prevNotes, newNote]);
+    storageAddNote(newNote); // Update in notesStorage
+    setNotes(prevNotes => [...prevNotes, newNote]); // Update in local state
   };
   
 
-  const deleteNote = (noteId: string) => {
+  const handleDeleteNote = (noteId: string) => {
+    storageDeleteNote(noteId);
     const updatedNotes = notes.filter(note => note.id !== noteId);
     setNotes(updatedNotes);
   };
+
 
   const saveNote = (noteId: string) => {
     const updatedNotes = notes.map(note => {
@@ -68,23 +83,24 @@ export default function CentralPanel() {
       <Box className={'h-full w-full bg-neutral-100 flex flex-col p-3 pb-0 rounded-lg'}>
         <Box flexGrow={1} overflow="auto">
         {currentNotes.map((note) => (
-          <Card key={note.id} className={'my-3'} >
+          <Card 
+            key={note.id} 
+            className={'my-3'} 
+            onClick={() => setSelectedCardId(note.id)}
+          >
             <CardContent className={'flex flex-col justify-between'}>
               <Box className={'flex justify-between'}>
                 <Typography variant="body2" color="textSecondary">
-                  {new Date(note.createdAt).toLocaleString()}
+                {new Date(note.createdAt).toLocaleString()}
                 </Typography>
                 <Box>
-                  <IconButton aria-label="edit" onClick={() => {
-                    setEditNoteId(note.id);
-                    setEditContent(note.content);
-                  }} size="small">
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton aria-label="delete" onClick={() => deleteNote(note.id)} size="small">
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
+          <IconButton aria-label="edit" onClick={(e) => handleEditClick(e, note.id)} size="small">
+            <EditIcon />
+          </IconButton>
+          <IconButton aria-label="delete" onClick={(e) => handleDeleteClick(e, note.id)} size="small">
+            <DeleteIcon />
+          </IconButton>
+        </Box>
               </Box>
               {editNoteId === note.id ? (
                 <Input
@@ -122,9 +138,11 @@ export default function CentralPanel() {
           </Box>
         )}
         <Box>
-          <InputContainer addNote={addNote}/>
+        <InputContainer addNote={handleAddNote}/>
         </Box>
       </Box>
     </>
   )
   }
+
+  export default CentralPanel;

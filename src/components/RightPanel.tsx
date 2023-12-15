@@ -1,11 +1,16 @@
-import { Box } from '@mui/material'
+import { Box, Card } from '@mui/material'
 import React from 'react'
+import { Note } from '../utils/notesStorage';
 
 interface RightPanelProps {
   isRightPanelOpen: boolean;
+  selectedCardId: string | null;
+  notes: Note[];
 }
 
-const RightPanel: React.FC<RightPanelProps> = ({ isRightPanelOpen }) => {
+const RightPanel: React.FC<RightPanelProps> = ({ isRightPanelOpen, selectedCardId, notes }) => {
+  const selectedCard = selectedCardId ? notes.find((note: Note) => note.id === selectedCardId) : null;
+
   const rightPanelStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -17,8 +22,15 @@ const RightPanel: React.FC<RightPanelProps> = ({ isRightPanelOpen }) => {
   return (
     <Box>
         <Box sx={rightPanelStyle}>
-        {isRightPanelOpen && (
-        <Box className={'flex flex-col justify-start items-center w-fit'}>        
+        {isRightPanelOpen && selectedCard && (
+        <Box className={'flex flex-col justify-start items-center w-fit'}>
+           {selectedCard && (
+              <Card>
+              <Box>
+                {selectedCard.content}
+              </Box>
+            </Card>
+            )}      
         </Box>
         )}
 
