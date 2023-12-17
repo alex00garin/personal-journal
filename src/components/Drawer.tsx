@@ -105,12 +105,11 @@ export default function MiniDrawer() {
   };
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      {/* App Bar */}
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} >
         <Toolbar className={'bg-neutral-100'}>
-          <IconButton 
+          {/* <IconButton 
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
@@ -120,20 +119,18 @@ export default function MiniDrawer() {
             }}
           >
             <MenuIcon className={'text-neutral-800'} />
-          </IconButton>
+          </IconButton> */}
           <Typography className={'text-neutral-800'} variant="h6" noWrap component="div">
-            Blog
+            Alex's Notes
           </Typography>
         </Toolbar>
       </AppBar>
-      {/* Drawer */}
-      <Drawer className={'bg-neutral-800 text-neutral-100'} variant="permanent" open={open}>
+      {/* <Drawer className={'bg-neutral-800 text-neutral-100'} variant="permanent" open={open}>
         <DrawerHeader className={'bg-neutral-800 text-neutral-100'}>
           <IconButton  onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon className={'text-neutral-100'}/> : <ChevronLeftIcon className={'text-neutral-100'}/>}
           </IconButton>
         </DrawerHeader>
-        {/* List */}
         <Divider className={'bg-neutral-200'}/>
         <List className={'bg-neutral-800 text-neutral-100'}>
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
@@ -159,7 +156,7 @@ export default function MiniDrawer() {
             </ListItem>
           ))}
         </List>
-      </Drawer>
+      </Drawer> */}
     </Box>
   );
 }

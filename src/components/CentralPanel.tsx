@@ -28,15 +28,15 @@ const CentralPanel: React.FC<CentralPanelProps> = ({ setSelectedCardId }) => {
 
   const handleEditClick = (event: React.MouseEvent, noteId: string) => {
     event.stopPropagation(); // Prevent triggering card's onClick
-    setEditNoteId(noteId);
     const noteToEdit = notes.find(note => note.id === noteId);
     if (noteToEdit) {
       setEditContent(noteToEdit.content);
+      setEditNoteId(noteId); // Set the note ID for editing
     }
   };
 
   const handleDeleteClick = (event: React.MouseEvent, noteId: string) => {
-    event.stopPropagation(); // Prevent triggering card's onClick
+    event.stopPropagation();
     handleDeleteNote(noteId);
   };
 
@@ -54,8 +54,8 @@ const CentralPanel: React.FC<CentralPanelProps> = ({ setSelectedCardId }) => {
       content: noteContent,
       createdAt: Date.now() 
     };
-    storageAddNote(newNote); // Update in notesStorage
-    setNotes(prevNotes => [...prevNotes, newNote]); // Update in local state
+    storageAddNote(newNote);
+    setNotes(prevNotes => [...prevNotes, newNote]); 
   };
   
 
@@ -74,24 +74,24 @@ const CentralPanel: React.FC<CentralPanelProps> = ({ setSelectedCardId }) => {
       return note;
     });
     setNotes(updatedNotes);
-    setEditNoteId(null);
-  };
+    setEditNoteId(null); // Reset the editNoteId after saving
+};
 
   
   return (
     <>
-      <Box className={'h-full w-full bg-neutral-100 flex flex-col p-3 pb-0 rounded-lg'}>
-        <Box flexGrow={1} overflow="auto">
+      <Box className={' bg-neutral-100 flex flex-col p-3 pb-0 rounded-lg h-full w-full'}>
+        <Box flexGrow={1} >
         {currentNotes.map((note) => (
           <Card 
             key={note.id} 
             className={'my-3'} 
             onClick={() => setSelectedCardId(note.id)}
           >
-            <CardContent className={'flex flex-col justify-between'}>
+            <CardContent className={'flex flex-col justify-between cursor-pointer'}>
               <Box className={'flex justify-between'}>
-                <Typography variant="body2" color="textSecondary">
-                {new Date(note.createdAt).toLocaleString()}
+                <Typography variant="body2" className={'text-stone-400'}>
+                  {new Date(note.createdAt).toLocaleString()}
                 </Typography>
                 <Box>
           <IconButton aria-label="edit" onClick={(e) => handleEditClick(e, note.id)} size="small">
@@ -115,10 +115,14 @@ const CentralPanel: React.FC<CentralPanelProps> = ({ setSelectedCardId }) => {
               ) : (
                 <Typography 
                   noWrap 
-                  style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-                  className={'flex max-w-2xl'}
+                  style={{ 
+                    overflow: 'hidden', 
+                    textOverflow: 'ellipsis', 
+                    whiteSpace: 'nowrap',
+                  }}
+                  // className={'flex '}
                 >
-                  {note.content}
+                {note.content.split('\n')[0]}
                 </Typography>
               )}
             </CardContent>
@@ -138,8 +142,8 @@ const CentralPanel: React.FC<CentralPanelProps> = ({ setSelectedCardId }) => {
           </Box>
         )}
         <Box>
-        <InputContainer addNote={handleAddNote}/>
-        </Box>
+        <InputContainer addNote={handleAddNote} />
+                </Box>
       </Box>
     </>
   )

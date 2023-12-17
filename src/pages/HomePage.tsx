@@ -10,12 +10,12 @@ import { Note, getNotes } from '../utils/notesStorage'; // Ensure correct path
 
 export default function HomePage() {
   const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true);
-  const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
+  const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
 
   const handleLeftPanelToggle = () => setIsLeftPanelOpen(!isLeftPanelOpen);
-  const handleRightPanelToggle = () => setIsRightPanelOpen(!isRightPanelOpen);
+  const handleRightPanelToggle = () => setIsRightPanelOpen(!isRightPanelOpen); // This stays inside HomePage
 
   useEffect(() => {
     setNotes(getNotes());
@@ -23,24 +23,26 @@ export default function HomePage() {
   
   return (
     <>
-      <Box className='home-container flex'>
+       <Box className='home-container flex w-[100vw] h-[100vh] bg-neutral-700 m-0 p-3'>
         <Drawer />
-        <Box className='main-content mt-20 flex w-full py-3'>
-          <Box className='sectors flex justify-between w-full gap-3'>
-            <Box className='flex-col w-auto border-r'>
-              <IconButton onClick={handleLeftPanelToggle}>
-                {isLeftPanelOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-              </IconButton>
-              <LeftPanel isLeftPanelOpen={isLeftPanelOpen} />
+        <Box className='main-content mt-16 flex py-3 flex-grow'>
+          <Box className='flex flex-grow gap-3'>
+            <Box className='flex-col' sx={{ flex: isLeftPanelOpen ? '0 0 350px' : '0 0 0px' }}>
+              <LeftPanel 
+                isLeftPanelOpen={isLeftPanelOpen} 
+                handleToggle={handleLeftPanelToggle} 
+              />
             </Box>
-            <Box className='flex-col w-full border-r pr-3'>
-            <CentralPanel setSelectedCardId={setSelectedCardId} />
+            <Box className='flex-col flex-grow'>
+              <CentralPanel setSelectedCardId={setSelectedCardId} />
             </Box>
-            <Box className='flex-col w-auto'>
-              <IconButton onClick={handleRightPanelToggle}>
-                {isRightPanelOpen ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-              </IconButton>
-              <RightPanel isRightPanelOpen={isRightPanelOpen} selectedCardId={selectedCardId} notes={notes} />
+            <Box className='flex-col' sx={{ flex: isRightPanelOpen ? '0 0 350px' : '0 0 0px' }}>
+              <RightPanel
+                isRightPanelOpen={isRightPanelOpen}
+                handleToggle={handleRightPanelToggle}
+                selectedCardId={selectedCardId}
+                notes={notes}
+              />            
             </Box>
           </Box>
         </Box>

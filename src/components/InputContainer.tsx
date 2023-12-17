@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Box, CardContent, CircularProgress, IconButton, TextareaAutosize } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -29,10 +29,10 @@ export default function InputContainer({ addNote }: InputContainerProps) {
   };
 
   return (
-    <Box className={'flex flex-col w-full m-0 p-0'}>
-      <CardContent className={'flex w-full items-center'}>
+    <Box className={'flex flex-col m-0 p-0'}>
+      <CardContent className={'flex items-center'}>
         <TextareaAutosize
-          className={'bg-neutral-100 border rounded-lg'}
+          className={'bg-neutral-100 border border-neutral-400 rounded-lg'}
           minRows={1}
           maxRows={6}
           style={{ 
