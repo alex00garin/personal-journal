@@ -27,11 +27,11 @@ const CentralPanel: React.FC<CentralPanelProps> = ({ setSelectedCardId }) => {
   const currentNotes = notes.slice(indexOfFirstNote, indexOfLastNote);
 
   const handleEditClick = (event: React.MouseEvent, noteId: string) => {
-    event.stopPropagation(); // Prevent triggering card's onClick
+    event.stopPropagation();
     const noteToEdit = notes.find(note => note.id === noteId);
     if (noteToEdit) {
       setEditContent(noteToEdit.content);
-      setEditNoteId(noteId); // Set the note ID for editing
+      setEditNoteId(noteId);
     }
   };
 
@@ -58,13 +58,11 @@ const CentralPanel: React.FC<CentralPanelProps> = ({ setSelectedCardId }) => {
     setNotes(prevNotes => [...prevNotes, newNote]); 
   };
   
-
   const handleDeleteNote = (noteId: string) => {
     storageDeleteNote(noteId);
     const updatedNotes = notes.filter(note => note.id !== noteId);
     setNotes(updatedNotes);
   };
-
 
   const saveNote = (noteId: string) => {
     const updatedNotes = notes.map(note => {
@@ -74,10 +72,9 @@ const CentralPanel: React.FC<CentralPanelProps> = ({ setSelectedCardId }) => {
       return note;
     });
     setNotes(updatedNotes);
-    setEditNoteId(null); // Reset the editNoteId after saving
+    setEditNoteId(null);
 };
 
-  
   return (
     <>
       <Box className={' bg-neutral-100 flex flex-col p-3 pb-0 rounded-lg h-full w-full'}>

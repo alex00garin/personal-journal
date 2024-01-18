@@ -1,5 +1,4 @@
 import { Box, Card, IconButton } from '@mui/material'
-import React, { useState } from 'react'
 import { Note } from '../utils/notesStorage';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -19,6 +18,7 @@ const RightPanel: React.FC<RightPanelProps> = ({ isRightPanelOpen, handleToggle,
     flexDirection: 'column',
     width: isRightPanelOpen ? '350px' : '60px',
     overflowX: 'hidden',
+    TransitionEvent: 'width 0.2s ease-in-out',
   };
   
   return (
@@ -36,13 +36,11 @@ const RightPanel: React.FC<RightPanelProps> = ({ isRightPanelOpen, handleToggle,
             <Box>
               {selectedCard.content}
             </Box>
-        </Card>
-        )}      
+          </Card>
+          )}      
         </Box>
         )}
-
-        </Box>
-      
+      </Box>
     </Box>
   )
 }
